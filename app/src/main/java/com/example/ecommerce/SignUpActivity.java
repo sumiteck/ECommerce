@@ -85,11 +85,11 @@ public class SignUpActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!(dataSnapshot.child("Users").child(emailid).exists())) {
                     HashMap<String,Object> usermap = new HashMap<>();
-                    usermap.put("Name",name);
-                    usermap.put("Email",emailid);
-                    usermap.put("Password",pass);
+                    usermap.put("email",emailid);
+                    usermap.put("name",name);
+                    usermap.put("password",pass);
 
-                    myRef.child("Users").child("child").updateChildren(usermap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    myRef.child("Users").child(emailid).updateChildren(usermap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
