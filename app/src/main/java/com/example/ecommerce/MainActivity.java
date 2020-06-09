@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.ecommerce.Model.Users;
@@ -25,6 +26,7 @@ import io.paperdb.Paper;
 
 public class MainActivity extends AppCompatActivity {
     private Button joinNowBtn, loginBtn;
+    private ImageView logo;
     private FirebaseAuth mAuth;
     private ProgressDialog loader;
 
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        logo = (ImageView)findViewById(R.id.logo);
         joinNowBtn = (Button) findViewById(R.id.main_join_btn);
         loginBtn = (Button) findViewById(R.id.main_login_btn);
         loader = new ProgressDialog(this);
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     {
                         if(usersdata.getPassword().equals(pass_login)){
                             Toast.makeText(MainActivity.this,"You are logged in Successfully",Toast.LENGTH_SHORT).show();
-                            //Prevalent.currentonlineUsers = usersdata;
+
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             startActivity(intent);
                         }

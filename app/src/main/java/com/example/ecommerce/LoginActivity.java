@@ -97,29 +97,32 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.child(parentDbname).child(email_login).exists())) {
                     Users usersdata = dataSnapshot.child(parentDbname).child(email_login).getValue(Users.class);
-                    if(usersdata.getEmail().equals(email_login))
-                    {
-                        if(usersdata.getPassword().equals(pass_login)){
-                            if(parentDbname.equals("Admins")){
+                    if (usersdata.getEmail().equals(email_login)) {
+                        if (usersdata.getPassword().equals(pass_login)) {
 
-                                Toast.makeText(LoginActivity.this,"Welcome Admin,You are logged in Successfully",Toast.LENGTH_SHORT).show();
+                            {
+                                if (parentDbname.equals("Admins")) {
+                                    Toast.makeText(LoginActivity.this, "Welcome Admin, you are logged in Successfully...", Toast.LENGTH_SHORT).show();
+                                    loader.dismiss();
 
-                                Intent intent = new Intent(LoginActivity.this, AdminCategoryActivity.class);
-                                startActivity(intent);
+                                    Intent intent = new Intent(LoginActivity.this, AdminCategoryActivity.class);
+
+                                    startActivity(intent);
+                                } else if (parentDbname.equals("Users")) {
+                                    Toast.makeText(LoginActivity.this, "logged in Successfully...", Toast.LENGTH_SHORT).show();
+                                    loader.dismiss();
+
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    Prevalent.currentonlineUsers = usersdata;
+                                    startActivity(intent);
+                                }
                             }
-                            Toast.makeText(LoginActivity.this,"You are logged in Successfully",Toast.LENGTH_SHORT).show();
-                            Prevalent.currentonlineUsers = usersdata;
 
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Username Not EXist", Toast.LENGTH_SHORT).show();
+                            loader.dismiss();
                         }
                     }
-
-                }
-                else
-                    {
-                    Toast.makeText(LoginActivity.this, "Username Not EXist", Toast.LENGTH_SHORT).show();
-                    loader.dismiss();
                 }
             }
 
@@ -131,6 +134,6 @@ public class LoginActivity extends AppCompatActivity {
 
         });
 
-}
-}
+        }
+    }
 

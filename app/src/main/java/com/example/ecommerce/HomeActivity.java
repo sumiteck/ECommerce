@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.ecommerce.Model.Products;
+import com.example.ecommerce.Model.Users;
 import com.example.ecommerce.Prevalent.Prevalent;
 import com.example.ecommerce.ViewHolders.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -44,13 +45,24 @@ public class HomeActivity extends AppCompatActivity
 
     private DatabaseReference ProductRef;
     private RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
+    public  RecyclerView.LayoutManager layoutManager;
+     public TextView usernameTextView;
+    private String type="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         Paper.init(this);
         setContentView(R.layout.activity_home);
+
+        Intent intent=getIntent();
+        Bundle bundle=intent.getExtras();
+        if(bundle!=null){
+            type= getIntent().getExtras().get("Admin").toString();
+        }
+
         ProductRef = FirebaseDatabase.getInstance().getReference().child("New Product");
         Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
@@ -76,9 +88,10 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
-        TextView usernameTextView = (TextView)findViewById(R.id.nav_username);
+
         CircleImageView profileImageView = headerView.findViewById(R.id.profile_image);
-        //usernameTextView.setText(Prevalent.currentonlineUsers.getName());
+
+//       Picasso.get().load(Prevalent.currentonlineUsers.getImage()).placeholder(R.drawable.profile).into(profileImageView);
 
 
     }
@@ -89,12 +102,35 @@ public class HomeActivity extends AppCompatActivity
         FirebaseRecyclerOptions<Products> options = new FirebaseRecyclerOptions.Builder<Products>().setQuery(ProductRef, Products.class).build();
         FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
+            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull final Products model) {
               holder.productName.setText(model.getPname());
-               // holder.productDesc.setText(model.getDescription());
-                holder.productPrice.setText(model.getPrice());
-                holder.productName.setText("Price" +model.getPname()+"$");
+               holder.productDesc.setText(model.getDescription());
+                holder.productPrice.setText("Price is "  +model.getPrice()+  "$");
+                holder.productName.setText( model.getPname());
                 Picasso.get().load(model.getImage()).into(holder.productImage);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if(type.equals("Admin")){
+
+                           Intent productDetailsIntent = new Intent(HomeActivity.this,AdminMantainProductsActivity.class);
+                            productDetailsIntent.putExtra("pid",model.getPid());
+                            startActivity(productDetailsIntent);
+
+                        }
+                        else
+                        {
+                            Intent productDetailsIntent = new Intent(HomeActivity.this,ProductDetailsActivity.class);
+                            productDetailsIntent.putExtra("pid",model.getPid());
+                            startActivity(productDetailsIntent);
+                        }
+
+
+
+                    }
+                });
             }
 
             @NonNull
@@ -148,6 +184,10 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_cart) {
+            if(!type.equals("Admins")) {
+                Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
             // Handle the camera action
         } else if (id == R.id.nav_categories) {
 

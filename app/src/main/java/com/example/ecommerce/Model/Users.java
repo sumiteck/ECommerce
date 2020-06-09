@@ -2,18 +2,18 @@ package com.example.ecommerce.Model;
 
 public class Users {
 
-    private String name, email, password;
+    private String name, email, password,address,image;
 
     public Users() {
 
     }
 
-    public Users(String name, String email, String password) {
+    public Users(String name, String email, String password, String address, String image) {
         this.name = name;
         this.email = email;
         this.password = password;
-
-
+        this.address = address;
+        this.image = image;
     }
 
     public String getName() {
@@ -38,5 +38,21 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class AdminCategoryActivity extends AppCompatActivity {
@@ -12,6 +13,8 @@ public class AdminCategoryActivity extends AppCompatActivity {
     private ImageView tshirts, sportsTshirts,femaleDresses,sweaters;
     private ImageView glasses, hatsCaps,walletsPurses,shoes;
     private ImageView headphones, watches,laptops,mobiles;
+
+    private Button LogoutBtn,CheckOrdersBtn,mantainProductsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,39 @@ public class AdminCategoryActivity extends AppCompatActivity {
         watches = (ImageView)findViewById(R.id.watches);
         laptops = (ImageView)findViewById(R.id.laptops);
         mobiles = (ImageView)findViewById(R.id.mobiles);
+
+        LogoutBtn=findViewById(R.id.admin_logout__btn);
+        CheckOrdersBtn=findViewById(R.id.check_orders_btn);
+        mantainProductsBtn=findViewById(R.id.mantain_btn);
+
+        mantainProductsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(AdminCategoryActivity.this,HomeActivity.class);
+                intent.putExtra("Admin","Admin");
+                startActivity(intent);
+
+            }
+        });
+
+        LogoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(AdminCategoryActivity.this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        CheckOrdersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(AdminCategoryActivity.this,AdminNewOrderActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 
 
